@@ -1,4 +1,4 @@
-package org.rudtyz.gen.obj2;
+package org.rudtyz.generate.obj2;
 
 public class MyContextSample {
     public static class InnerSample {

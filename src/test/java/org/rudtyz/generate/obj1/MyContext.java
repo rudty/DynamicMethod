@@ -1,4 +1,4 @@
-package org.rudtyz.gen.obj1;
+package org.rudtyz.generate.obj1;
 
 public class MyContext implements IContext0 {
     public int getInt() {

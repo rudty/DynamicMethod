@@ -8,7 +8,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Parameter;
 
-class DynamicFunctionFactory1 extends DynamicFunctionFactory0 {
+class SingleParameterDynamicMethodFactory extends DefaultDynamicMethodFactory {
 
     private final Class<?> contextClass;
     private final Class<?> implementMethodParameterClass;
@@ -23,7 +23,7 @@ class DynamicFunctionFactory1 extends DynamicFunctionFactory0 {
      */
     private final ParameterDispatcher parameterDispatcher;
     private final ContextToCallObject contextToCallObject;
-    public DynamicFunctionFactory1(
+    public SingleParameterDynamicMethodFactory(
             final Class<?> callObjectClass,
             final Method callMethod,
             final Class<?> interfaceClass,
@@ -92,7 +92,7 @@ class DynamicFunctionFactory1 extends DynamicFunctionFactory0 {
             return true;
         }
 
-        final Method parameterDispatchMethod = getParameterDispatchMethod(parameter);
+        final Method parameterDispatchMethod = getParameterDispatchMethod(callMethod, parameter, parameterIndex);
         invokeV(mv, parameterDispatchMethod);
 
         tryCast(mv, parameterType, parameterDispatchMethod.getReturnType());
@@ -141,12 +141,12 @@ class DynamicFunctionFactory1 extends DynamicFunctionFactory0 {
                 callOpCode == Opcodes.INVOKEINTERFACE);
     }
 
-    private Method getParameterDispatchMethod(Parameter parameter) {
+    private Method getParameterDispatchMethod(Method callMethod, Parameter parameter, int parameterIndex) {
         if (parameterDispatcher == null) {
             throw new IllegalArgumentException("ParameterDispatcher is not set");
         }
 
-        final Method method = parameterDispatcher.parameterDispatch(contextClass, parameter);
+        final Method method = parameterDispatcher.parameterDispatch(contextClass, callMethod, parameter, parameterIndex);
         if (method.getParameterCount() != 0) {
             throw new IllegalArgumentException("ParameterDispatcher method support only no parameter method");
         }

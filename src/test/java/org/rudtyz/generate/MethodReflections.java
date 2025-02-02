@@ -1,4 +1,4 @@
-package org.rudtyz.gen;
+package org.rudtyz.generate;
 
 import java.lang.reflect.Method;
 
@@ -57,7 +57,7 @@ public class MethodReflections {
             ContextToCallObject contextToCallObject) {
         final Class<?> callObjectClass = callInstance.getClass();
         final Method callMethod = find(callObjectClass, callMethodName);
-        final Class<?> generateClass = DynamicFunctionFactory.generateClass(
+        final Class<?> generateClass = DynamicMethodFactory.generateClass(
                 callObjectClass,
                 callMethod,
                 interfaceClass,

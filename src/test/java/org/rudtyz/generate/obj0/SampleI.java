@@ -1,4 +1,4 @@
-package org.rudtyz.gen.obj0;
+package org.rudtyz.generate.obj0;
 
 public class SampleI {
     public void my(int a) {

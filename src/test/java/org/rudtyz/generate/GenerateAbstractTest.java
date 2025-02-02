@@ -1,8 +1,8 @@
-package org.rudtyz.gen;
+package org.rudtyz.generate;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.rudtyz.gen.abstractClass.ImplSample;
+import org.rudtyz.generate.abstractClass.ImplSample;
 
 import java.util.function.IntSupplier;
 import java.util.function.Supplier;

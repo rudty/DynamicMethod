@@ -4,13 +4,13 @@ import org.objectweb.asm.Opcodes;
 
 import java.lang.reflect.Method;
 
-public final class DynamicFunctionFactory {
+public final class DynamicMethodFactory {
     static int javaVersion = Opcodes.V21;
 
     public record GenerateResult(String className, byte[] classData) {
     }
 
-    private DynamicFunctionFactory() {
+    private DynamicMethodFactory() {
         throw new AssertionError("static class");
     }
 
@@ -48,7 +48,7 @@ public final class DynamicFunctionFactory {
             final Class<?> callObjectClass,
             final Method callMethod,
             final Class<T> interfaceClass) {
-        final DynamicFunctionFactory1 g = new DynamicFunctionFactory1(callObjectClass, callMethod, interfaceClass, null, null, null);
+        final SingleParameterDynamicMethodFactory g = new SingleParameterDynamicMethodFactory(callObjectClass, callMethod, interfaceClass, null, null, null);
         final byte[] generateClassData = g.generate();
         final String generateClassName = g.getClassName();
         return new GenerateResult(generateClassName, generateClassData);
@@ -103,7 +103,7 @@ public final class DynamicFunctionFactory {
             final Class<?> contextClass,
             final ContextToCallObject contextToCallObject,
             final ParameterDispatcher parameterDispatcher) {
-        final DynamicFunctionFactory1 g = new DynamicFunctionFactory1(
+        final SingleParameterDynamicMethodFactory g = new SingleParameterDynamicMethodFactory(
                 callObjectClass,
                 callMethod,
                 interfaceClass,

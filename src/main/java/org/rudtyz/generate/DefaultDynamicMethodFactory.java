@@ -28,7 +28,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  * }
  * </pre>
  */
-class DynamicFunctionFactory0 {
+class DefaultDynamicMethodFactory {
     private static final String FIELD_NAME = "instance";
     private static final AtomicInteger classNameCounter = new AtomicInteger(0);
     private final ClassWriter classWriter = new ClassWriter(ClassWriter.COMPUTE_FRAMES);
@@ -53,14 +53,14 @@ class DynamicFunctionFactory0 {
      */
     private final boolean generateField;
 
-    protected DynamicFunctionFactory0(
+    protected DefaultDynamicMethodFactory(
             final Class<?> callObjectClass,
             final Method callMethod,
             final Class<?> interfaceClass) {
         this(callObjectClass, callMethod, interfaceClass, true);
     }
 
-    protected DynamicFunctionFactory0(
+    protected DefaultDynamicMethodFactory(
             final Class<?> callObjectClass,
             final Method callMethod,
             final Class<?> interfaceClass,
@@ -69,7 +69,7 @@ class DynamicFunctionFactory0 {
         this.callObjectType = Type.getType(callObjectClass);
         this.callMethod = callMethod;
         this.interfaceClass = interfaceClass;
-        this.generateField = generateField;
+        this.generateField = generateField && !Modifier.isStatic(callMethod.getModifiers());
         this.interfaceImplementMethod = findImplementMethod(interfaceClass);
     }
 
@@ -223,7 +223,7 @@ class DynamicFunctionFactory0 {
      * </pre>
      */
     private void declareClass() {
-        classWriter.visit(DynamicFunctionFactory.javaVersion,
+        classWriter.visit(DynamicMethodFactory.javaVersion,
                 Opcodes.ACC_PUBLIC | Opcodes.ACC_FINAL,
                 getInternalClassName(),
                 null,
@@ -268,7 +268,7 @@ class DynamicFunctionFactory0 {
                 false);
 
         boolean generateEmptyConstructor = false;
-        if (generateField && !Modifier.isStatic(callMethod.getModifiers())) {
+        if (generateField) {
             //this.instance = instance;
             final String callObjectDescriptor = callObjectType.getDescriptor();
             classWriter.visitField(Opcodes.ACC_PRIVATE | Opcodes.ACC_FINAL,

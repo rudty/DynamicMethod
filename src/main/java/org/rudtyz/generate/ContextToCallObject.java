@@ -1,4 +1,4 @@
-package org.rudtyz.gen;
+package org.rudtyz.generate;
 
 import java.lang.reflect.Method;
 

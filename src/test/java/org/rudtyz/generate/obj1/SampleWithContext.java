@@ -1,4 +1,4 @@
-package org.rudtyz.gen.obj1;
+package org.rudtyz.generate.obj1;
 
 import java.util.Objects;
 

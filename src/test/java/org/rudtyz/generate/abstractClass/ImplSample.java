@@ -1,4 +1,4 @@
-package org.rudtyz.gen.abstractClass;
+package org.rudtyz.generate.abstractClass;
 
 public class ImplSample extends AbstractSample {
     @Override

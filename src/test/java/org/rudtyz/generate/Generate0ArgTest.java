@@ -1,10 +1,10 @@
-package org.rudtyz.gen;
+package org.rudtyz.generate;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.rudtyz.gen.obj0.SampleI;
-import org.rudtyz.gen.obj0.SampleV;
+import org.rudtyz.generate.obj0.SampleI;
+import org.rudtyz.generate.obj0.SampleV;
 
 import java.util.function.IntConsumer;
 import java.util.function.IntSupplier;
@@ -18,12 +18,12 @@ public class Generate0ArgTest {
 
     @BeforeEach
     public void before() {
-        DynamicFunctionFactory.setGenerateClassJavaVersion(21);
+        DynamicMethodFactory.setGenerateClassJavaVersion(21);
     }
 
     @Test
     public void v_jdk8() throws Exception {
-        DynamicFunctionFactory.setGenerateClassJavaVersion(8);
+        DynamicMethodFactory.setGenerateClassJavaVersion(8);
         final Runnable o = MethodReflections.generateInstance(
                 new SampleV(),
                 "my",

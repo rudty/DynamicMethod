@@ -1,10 +1,10 @@
-package org.rudtyz.gen;
+package org.rudtyz.generate;
 
 import org.junit.jupiter.api.Test;
-import org.rudtyz.gen.obj1.IContext0;
-import org.rudtyz.gen.obj1.MyContext;
-import org.rudtyz.gen.obj1.SampleWithContext;
-import org.rudtyz.gen.obj2.MyContextSample;
+import org.rudtyz.generate.obj1.IContext0;
+import org.rudtyz.generate.obj1.MyContext;
+import org.rudtyz.generate.obj1.SampleWithContext;
+import org.rudtyz.generate.obj2.MyContextSample;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
@@ -47,7 +47,7 @@ public class Generate1ArgTest {
                 IContext0.class,
                 new ParameterDispatcher() {
                     @Override
-                    public Method parameterDispatch(final Class<?> contextClass, final Parameter parameter) {
+                    public Method parameterDispatch(final Class<?> contextClass, final Method callMethod, final Parameter parameter, final int parameterIndex) {
                         return MethodReflections.find(contextClass, "getIntContext0");
                     }
                 });
@@ -64,7 +64,7 @@ public class Generate1ArgTest {
                 MyContext.class,
                 new ParameterDispatcher() {
                     @Override
-                    public Method parameterDispatch(final Class<?> contextClass, final Parameter parameter) {
+                    public Method parameterDispatch(final Class<?> contextClass, final Method callMethod, final Parameter parameter, final int parameterIndex) {
                         return MethodReflections.find(contextClass, "getIntContext0");
                     }
                 });
@@ -77,7 +77,7 @@ public class Generate1ArgTest {
     @Test
     public void inner_context() throws Exception{
         final Method callMethod = MethodReflections.find(MyContextSample.InnerSample.class, "context");
-        final Class<?> generateClass = DynamicFunctionFactory.generateClass(MyContextSample.InnerSample.class,
+        final Class<?> generateClass = DynamicMethodFactory.generateClass(MyContextSample.InnerSample.class,
                 callMethod,
                 Consumer.class,
                 MyContextSample.class,
@@ -95,7 +95,7 @@ public class Generate1ArgTest {
     @Test
     public void inner_contexti() throws Exception{
         final Method callMethod = MethodReflections.find(MyContextSample.InnerSample.class, "contexti");
-        final Class<?> generateClass = DynamicFunctionFactory.generateClass(
+        final Class<?> generateClass = DynamicMethodFactory.generateClass(
                 MyContextSample.InnerSample.class,
                 callMethod,
                 Consumer.class,
@@ -108,7 +108,7 @@ public class Generate1ArgTest {
                 },
                 new ParameterDispatcher() {
                     @Override
-                    public Method parameterDispatch(final Class<?> contextClass, final Parameter parameter) {
+                    public Method parameterDispatch(final Class<?> contextClass, final Method callMethod, final Parameter parameter, final int parameterIndex) {
                         return MethodReflections.find(contextClass, "getIntValue");
                     }
                 });
