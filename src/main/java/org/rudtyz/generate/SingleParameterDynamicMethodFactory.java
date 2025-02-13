@@ -55,7 +55,13 @@ class SingleParameterDynamicMethodFactory extends DefaultDynamicMethodFactory {
     @Override
     protected void loadAllParameters(final MethodVisitor mv, final Method callMethod, final Method implementMethod) {
         if (contextToCallObject != null) {
-            final Method method = contextToCallObject.getCallObjectMethod(contextClass);
+            final Method method;
+            try {
+                method = contextToCallObject.getCallObjectMethod(contextClass);
+            } catch (NoSuchMethodException e) {
+                throw new IllegalArgumentException("getCallObjectMethod", e);
+            }
+
             if (method == null) {
                 throw new IllegalArgumentException(contextClass + "get context method is null");
             }
@@ -119,12 +125,13 @@ class SingleParameterDynamicMethodFactory extends DefaultDynamicMethodFactory {
      * @param invokeMethod method to invoke
      */
     private void invokeV(MethodVisitor mv, Method invokeMethod) {
-        final String internalClassName = Type.getInternalName(invokeMethod.getDeclaringClass());
+        final Class<?> invokeMethodDeclaringClass = invokeMethod.getDeclaringClass();
+        final String internalClassName = Type.getInternalName(invokeMethodDeclaringClass);
         final int callOpCode;
         if (Modifier.isStatic(invokeMethod.getModifiers())) {
             callOpCode = Opcodes.INVOKESTATIC;
         } else {
-            if (contextClass.isInterface()) {
+            if (invokeMethodDeclaringClass.isInterface()) {
                 callOpCode = Opcodes.INVOKEINTERFACE;
             } else {
                 callOpCode = Opcodes.INVOKEVIRTUAL;
@@ -145,8 +152,13 @@ class SingleParameterDynamicMethodFactory extends DefaultDynamicMethodFactory {
         if (parameterDispatcher == null) {
             throw new IllegalArgumentException("ParameterDispatcher is not set");
         }
+        final Method method;
+        try {
+            method = parameterDispatcher.parameterDispatch(contextClass, callMethod, parameter, parameterIndex);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("parameterDispatch", e);
+        }
 
-        final Method method = parameterDispatcher.parameterDispatch(contextClass, callMethod, parameter, parameterIndex);
         if (method.getParameterCount() != 0) {
             throw new IllegalArgumentException("ParameterDispatcher method support only no parameter method");
         }
